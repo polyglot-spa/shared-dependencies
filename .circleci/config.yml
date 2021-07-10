@@ -1,0 +1,21 @@
+version: 2.1
+orbs:
+  aws-s3: circleci/aws-s3@2.0
+jobs:
+  deploy:
+    docker:
+      - image: circleci/node:12.13.1
+    steps:
+      - checkout
+      - aws-s3/copy:
+          from: dist/
+          to: 's3://polyglot-spa-shared-dependencies'
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - deploy:
+          context: AWS S3
+          filters:
+            branches:
+              only: main
